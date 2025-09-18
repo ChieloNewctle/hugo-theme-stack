@@ -1,31 +1,31 @@
 {{ $image := partialCached "helper/image" (dict "Context" .context "Type" .Type) .context.RelPermalink .Type }}
 <article class="{{ if $image.exists }}has-image{{ end }}">
     <a href="{{ .context.RelPermalink }}">
-        
+
         {{ if $image.exists }}
             <div class="article-image">
                 {{ if $image.resource }}
                     {{- $imageRaw := $image.resource | resources.Fingerprint "md5" -}}
-                    {{- $Permalink := $imageRaw.RelPermalink -}}
-                    {{- $Width := $imageRaw.Width -}}
-                    {{- $Height := $imageRaw.Height -}}
+                    {{- $relPermalink := $imageRaw.RelPermalink -}}
+                    {{- $width := $imageRaw.Width -}}
+                    {{- $height := $imageRaw.Height -}}
 
                     {{- if .context.Site.Params.imageProcessing.cover.enabled -}}
                         {{- $thumbnail := $imageRaw.Fill .size -}}
-                        {{- $Permalink = $thumbnail.RelPermalink -}}
-                        {{- $Width = $thumbnail.Width -}}
-                        {{- $Height = $thumbnail.Height -}}
+                        {{- $relPermalink = $thumbnail.RelPermalink -}}
+                        {{- $width = $thumbnail.Width -}}
+                        {{- $height = $thumbnail.Height -}}
                     {{- end -}}
-                    
-                    <img src="{{ $Permalink }}" 
-                        width="{{ $Width }}" 
-                        height="{{ $Height }}" 
+
+                    <img src="{{ $relPermalink }}"
+                        width="{{ $width }}"
+                        height="{{ $height }}"
                         loading="lazy"
                         alt="Featured image of post {{ .context.Title }}"
                         {{ with .context.Slug }}data-key="{{ . }}" {{ end }}
                         data-hash="{{ $imageRaw.Data.Integrity }}">
                 {{ else }}
-                    <img src="{{ $image.permalink }}" loading="lazy" data-key="{{ .context.Slug }}" data-hash="{{ $image.permalink }}"/>
+                    <img src="{{ $image.relPermalink }}" loading="lazy" data-key="{{ .context.Slug }}" data-hash="{{ $image.relPermalink }}"/>
                 {{ end }}
             </div>
         {{ end }}

@@ -14,14 +14,14 @@
                         {{ end }}
                     </footer>
                 </div>
-        
+
                 {{ with $link.image }}
-                    {{ $permalink := . }}
+                    {{ $relPermalink := . }}
                     {{ with ($.Resources.GetMatch (printf "%s" (. | safeURL))) }}
-                        {{ $permalink = .RelPermalink }}
+                        {{ $relPermalink = .RelPermalink }}
                     {{ end }}
                     <div class="article-image">
-                        <img src="{{ $permalink }}" loading="lazy">
+                        <img src="{{ $relPermalink }}" loading="lazy">
                     </div>
                 {{ end }}
             </a>

@@ -1,4 +1,4 @@
-{{ $result := dict "exists" false "permalink" nil "resource" nil "isDefault" false }}
+{{ $result := dict "exists" false "relPermalink" nil "resource" nil "isDefault" false }}
 {{ $imageField := default "image" .Context.Site.Params.featuredImageField }}
 {{ $imageValue := index .Context.Params $imageField }}
 
@@ -9,13 +9,13 @@
 
     {{ if or (eq $url.Scheme "http") (eq $url.Scheme "https") }}
         <!-- Is an external image -->
-        {{ $result = merge $result (dict "permalink" $imageValue) }}
+        {{ $result = merge $result (dict "relPermalink" $imageValue) }}
     {{ else }}
         {{ $pageResourceImage := .Context.Resources.GetMatch (printf "%s" ($imageValue | safeURL)) }}
-        
+
         {{ if $pageResourceImage }}
             <!-- If image is found under page bundle -->
-            {{ $result = merge $result (dict "permalink" $pageResourceImage.RelPermalink) }}
+            {{ $result = merge $result (dict "relPermalink" $pageResourceImage.RelPermalink) }}
 
             <!-- Disable SVG image processing, not supported by Hugo -->
             {{ if ne (path.Ext $imageValue) ".svg" }}
@@ -23,7 +23,7 @@
             {{ end }}
         {{ else }}
             <!-- Can not find the image under page bundle. Could be a relative linked image -->
-            {{ $result = merge $result (dict "permalink" (relURL $imageValue)) }}
+            {{ $result = merge $result (dict "relPermalink" (relURL $imageValue)) }}
         {{ end }}
 
     {{ end }}
@@ -41,7 +41,7 @@
 
             {{ if $siteResourceImage }}
                 <!-- Try search image under site's assets folder -->
-                {{ $result = merge $result (dict "permalink" $siteResourceImage.RelPermalink) }}
+                {{ $result = merge $result (dict "relPermalink" $siteResourceImage.RelPermalink) }}
                 {{ $result = merge $result (dict "resource" $siteResourceImage) }}
             {{ else }}
                 <!-- Can not find the image -->
@@ -51,9 +51,9 @@
 
         {{ else }}
             <!-- External image -->
-            {{ $result = merge $result (dict "permalink" (relURL $defaultImageSetting.src)) }}
+            {{ $result = merge $result (dict "relPermalink" (relURL $defaultImageSetting.src)) }}
         {{ end }}
-        
+
     {{ end }}
 
 {{ end }}

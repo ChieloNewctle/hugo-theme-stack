@@ -1,7 +1,7 @@
 interface pageData {
     title: string,
     date: string,
-    permalink: string,
+    relPermalink: string,
     content: string,
     image?: string,
     preview: string,
@@ -292,7 +292,7 @@ class Search {
 
     public static render(item: pageData) {
         return <article>
-            <a href={item.permalink}>
+            <a href={item.relPermalink}>
                 <div class="article-details">
                     <h2 class="article-title" dangerouslySetInnerHTML={{ __html: item.title }}></h2>
                     <section class="article-preview" dangerouslySetInnerHTML={{ __html: item.preview }}></section>

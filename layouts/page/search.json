@@ -5,18 +5,18 @@
 {{- $result := slice -}}
 
 {{- range $filtered -}}
-    {{- $data := dict "title" .Title "date" .Date "permalink" .Permalink "content" (.Plain) -}}
+    {{- $data := dict "title" .Title "date" .Date "relPermalink" .RelPermalink "content" (.Plain) -}}
 
     {{- $image := partialCached "helper/image" (dict "Context" . "Type" "articleList") .RelPermalink "articleList" -}}
     {{- if $image.exists -}}
         {{- $imagePermalink := "" -}}
         {{- if and $image.resource (default true .Page.Site.Params.imageProcessing.cover.enabled) -}}
             {{- $thumbnail := $image.resource.Fill "120x120" -}}
-            {{- $imagePermalink = (absURL $thumbnail.Permalink) -}}
+            {{- $imagePermalink = (absURL $thumbnail.RelPermalink) -}}
         {{- else -}}
-            {{- $imagePermalink = $image.permalink -}}
+            {{- $imagePermalink = $image.relPermalink -}}
         {{- end -}}
-        
+
         {{- $data = merge $data (dict "image" (absURL $imagePermalink)) -}}
     {{- end -}}
 
